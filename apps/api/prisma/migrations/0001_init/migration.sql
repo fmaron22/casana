@@ -1,4 +1,4 @@
-﻿-- CreateSchema
+-- CreateSchema
 CREATE SCHEMA IF NOT EXISTS "identity";
 
 -- CreateSchema
@@ -112,4 +112,3 @@ ALTER TABLE "onboarding"."Documento" ADD CONSTRAINT "Documento_patronId_fkey" FO
 
 -- AddForeignKey
 ALTER TABLE "onboarding"."Documento" ADD CONSTRAINT "Documento_trabajadorId_fkey" FOREIGN KEY ("trabajadorId") REFERENCES "onboarding"."Trabajador"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-

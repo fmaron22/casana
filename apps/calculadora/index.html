@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casana · Calculadora de cuotas IMSS</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="wrap">
+    <!-- LOGO (recreado del manual de marca) -->
+    <div class="brand" aria-label="Casana">
+      <svg viewBox="0 0 250 60" role="img" aria-label="Casana">
+        <defs>
+          <linearGradient id="casanaHouse" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#BF3B69" />
+            <stop offset="1" stop-color="#D02660" />
+          </linearGradient>
+        </defs>
+        <path d="M31 6 L57 28 V49 a4 4 0 0 1 -4 4 H13 a4 4 0 0 1 -4 -4 V28 Z"
+              fill="url(#casanaHouse)" />
+        <path d="M20 35 Q33 48 46 35" fill="none" stroke="#fff"
+              stroke-width="4.4" stroke-linecap="round" />
+        <text x="76" y="43" font-family="Gotham, Montserrat, system-ui, sans-serif"
+              font-size="40" font-weight="700" fill="currentColor" letter-spacing="-1">casana</text>
+      </svg>
+    </div>
+
+    <section class="card">
+      <h1>Calculadora de cuotas IMSS</h1>
+      <p class="sub">Estima cuánto pagas al mes por dar de alta a tu persona trabajadora del hogar
+        ante el IMSS e INFONAVIT.</p>
+
+      <div class="field">
+        <label for="salario">Salario diario <span class="hint">(lo que pagas por día)</span></label>
+        <div class="money-input">
+          <span>$</span>
+          <input id="salario" type="number" inputmode="decimal" min="0" step="1"
+                 value="400" aria-describedby="salarioHint" />
+          <span>MXN</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Modalidad de cotización</label>
+        <div class="seg" role="group" aria-label="Modalidad">
+          <button type="button" data-mod="mesCompleto" aria-pressed="true">Mes completo</button>
+          <button type="button" data-mod="porDia" aria-pressed="false">Por día</button>
+        </div>
+      </div>
+
+      <div class="field" id="diasField" hidden>
+        <label for="dias">Días trabajados al mes</label>
+        <div class="days-row">
+          <input id="dias" type="range" min="1" max="31" value="15" />
+          <span class="days-val" id="diasVal">15</span>
+        </div>
+      </div>
+
+      <!-- Resultado -->
+      <div class="result">
+        <div class="k">Total a pagar</div>
+        <div><span class="v" id="total">$0</span> <span class="per" id="per">/ mes</span></div>
+        <div class="sbc" id="sbc"></div>
+      </div>
+
+      <div class="split">
+        <div class="pill"><div class="k">Cuotas IMSS</div><div class="v" id="imss">$0</div></div>
+        <div class="pill"><div class="k">INFONAVIT</div><div class="v" id="infonavit">$0</div></div>
+      </div>
+
+      <details>
+        <summary>Ver desglose por concepto</summary>
+        <table>
+          <thead>
+            <tr><th>Concepto</th><th>Patronal</th><th>Obrera</th><th>Subtotal</th></tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+          <tfoot>
+            <tr><td>Total</td><td id="tPat">$0</td><td id="tObr">$0</td><td id="tTot">$0</td></tr>
+          </tfoot>
+        </table>
+      </details>
+
+      <p class="disclaimer">
+        <strong>Estimación.</strong> Cálculo con parámetros de referencia (UMA 2026 $117.31,
+        factor de integración 1.0493). Los importes deben verificarse contra el simulador oficial
+        del IMSS antes de cualquier pago. El resultado real y la línea de captura los emite el IMSS.
+      </p>
+    </section>
+  </main>
+
+  <script type="module">
+    import { calcular } from "./engine.mjs";
+
+    const fmt = new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" });
+    const $ = (id) => document.getElementById(id);
+    const state = { salarioDiario: 400, modalidad: "mesCompleto", diasLaborados: 15 };
+
+    function render() {
+      let r;
+      try {
+        r = calcular({
+          salarioDiario: state.salarioDiario,
+          modalidad: state.modalidad,
+          diasLaborados: state.diasLaborados,
+        });
+      } catch (e) {
+        $("total").textContent = "—";
+        $("sbc").textContent = e.message;
+        return;
+      }
+      $("total").textContent = fmt.format(r.totales.total);
+      $("per").textContent = state.modalidad === "mesCompleto" ? "/ mes" : `/ ${r.inputs.dias} días`;
+      $("sbc").textContent = `SBC: ${fmt.format(r.sbc)} · base de ${r.inputs.dias} días`;
+      $("imss").textContent = fmt.format(r.totales.imss);
+      $("infonavit").textContent = fmt.format(r.totales.infonavit);
+
+      $("tbody").innerHTML = r.conceptos.map((c) => `
+        <tr>
+          <td>${c.nombre}</td>
+          <td>${fmt.format(c.patronal)}</td>
+          <td>${c.obrera ? fmt.format(c.obrera) : "—"}</td>
+          <td>${fmt.format(c.subtotal)}</td>
+        </tr>`).join("");
+      $("tPat").textContent = fmt.format(r.totales.patronal);
+      $("tObr").textContent = fmt.format(r.totales.obrera);
+      $("tTot").textContent = fmt.format(r.totales.total);
+    }
+
+    $("salario").addEventListener("input", (e) => {
+      state.salarioDiario = parseFloat(e.target.value) || 0;
+      render();
+    });
+    document.querySelectorAll(".seg button").forEach((b) => {
+      b.addEventListener("click", () => {
+        document.querySelectorAll(".seg button").forEach((x) =>
+          x.setAttribute("aria-pressed", String(x === b)));
+        state.modalidad = b.dataset.mod;
+        $("diasField").hidden = state.modalidad !== "porDia";
+        render();
+      });
+    });
+    $("dias").addEventListener("input", (e) => {
+      state.diasLaborados = parseInt(e.target.value, 10);
+      $("diasVal").textContent = state.diasLaborados;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

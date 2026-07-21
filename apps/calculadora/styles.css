@@ -1,0 +1,155 @@
+/* =========================================================================
+   Casana · Sistema de diseño (extraído del manual de marca)
+   Primario #C23760 · Secundario #9F5074 · Oscuro #20252C
+   Degradado casa #BF3B69 → #D02660 · Tipografía Gotham (fallback Montserrat)
+   ========================================================================= */
+:root {
+  --casana-primary: #c23760;
+  --casana-primary-050: #fbeef3;
+  --casana-secondary: #9f5074;
+  --casana-dark: #20252c;
+  --casana-house-top: #bf3b69;
+  --casana-house-bottom: #d02660;
+
+  --ink: #20252c;
+  --ink-soft: #5b626b;
+  --line: #e7e3e6;
+  --bg: #f6f4f5;
+  --card: #ffffff;
+  --field-bg: #ffffff;
+  --radius: 18px;
+  --shadow: 0 12px 40px rgba(32, 37, 44, 0.08);
+  --font: "Gotham", "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Tema oscuro (variante oscura del manual, base #20252C) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #f2eef0;
+    --ink-soft: #a6acb4;
+    --line: #333b45;
+    --bg: #171b21;
+    --card: #20252c;
+    --field-bg: #1a1f26;
+    --shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  }
+}
+:root[data-theme="dark"] {
+  --ink: #f2eef0;
+  --ink-soft: #a6acb4;
+  --line: #333b45;
+  --bg: #171b21;
+  --card: #20252c;
+  --field-bg: #1a1f26;
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+:root[data-theme="light"] {
+  --ink: #20252c;
+  --ink-soft: #5b626b;
+  --line: #e7e3e6;
+  --bg: #f6f4f5;
+  --card: #ffffff;
+  --field-bg: #ffffff;
+  --shadow: 0 12px 40px rgba(32, 37, 44, 0.08);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.45;
+}
+
+.wrap { max-width: 680px; margin: 0 auto; padding: 28px 18px 64px; }
+
+/* Header ------------------------------------------------------------------ */
+.brand { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; color: var(--ink); }
+.brand svg { height: 40px; width: auto; display: block; }
+
+/* Card -------------------------------------------------------------------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 26px;
+}
+.card + .card { margin-top: 18px; }
+h1 { font-size: 1.5rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+.sub { color: var(--ink-soft); margin: 0 0 22px; font-size: 0.96rem; }
+
+/* Form -------------------------------------------------------------------- */
+.field { margin-bottom: 20px; }
+label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; }
+.hint { font-weight: 400; color: var(--ink-soft); }
+
+.money-input {
+  display: flex; align-items: center; gap: 8px;
+  border: 1.5px solid var(--line); border-radius: 12px;
+  padding: 12px 14px; background: var(--field-bg); transition: border-color .15s;
+}
+.money-input:focus-within { border-color: var(--casana-primary); }
+.money-input span { color: var(--ink-soft); font-weight: 600; }
+.money-input input {
+  border: 0; outline: 0; font: inherit; font-size: 1.15rem; font-weight: 600;
+  width: 100%; color: var(--ink); background: transparent;
+}
+
+/* Segmented toggle */
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+  background: var(--bg); padding: 5px; border-radius: 12px; }
+.seg button {
+  border: 0; background: transparent; font: inherit; font-weight: 600;
+  padding: 10px; border-radius: 9px; cursor: pointer; color: var(--ink-soft);
+  transition: all .15s;
+}
+.seg button[aria-pressed="true"] {
+  background: var(--card); color: var(--casana-primary); box-shadow: 0 2px 8px rgba(32,37,44,.12);
+}
+
+.days-row { display: flex; align-items: center; gap: 14px; }
+.days-row input[type="range"] { flex: 1; accent-color: var(--casana-primary); }
+.days-val {
+  min-width: 42px; text-align: center; font-weight: 700; font-size: 1.1rem;
+  color: var(--casana-primary);
+}
+[hidden] { display: none !important; }
+
+/* Result ------------------------------------------------------------------ */
+.result {
+  background: linear-gradient(135deg, var(--casana-house-top), var(--casana-house-bottom));
+  color: #fff; border-radius: 14px; padding: 22px 24px; margin-top: 4px;
+}
+.result .k { font-size: 0.85rem; opacity: .9; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; }
+.result .v { font-size: 2.5rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+.result .per { font-size: 1rem; font-weight: 600; opacity: .9; }
+.result .sbc { margin-top: 8px; font-size: 0.85rem; opacity: .92; }
+
+/* Breakdown --------------------------------------------------------------- */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+.pill { border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.pill .k { font-size: 0.8rem; color: var(--ink-soft); font-weight: 600; }
+.pill .v { font-size: 1.3rem; font-weight: 700; }
+
+details { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 8px; }
+summary { cursor: pointer; font-weight: 600; color: var(--casana-primary); padding: 8px 0; list-style: none; }
+summary::-webkit-details-marker { display: none; }
+summary::before { content: "＋ "; }
+details[open] summary::before { content: "－ "; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 8px; }
+th, td { text-align: right; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+th:first-child, td:first-child { text-align: left; }
+thead th { color: var(--ink-soft); font-weight: 600; font-size: 0.78rem; }
+tfoot td { font-weight: 700; border-top: 2px solid var(--ink); border-bottom: 0; }
+
+.disclaimer { color: var(--ink-soft); font-size: 0.8rem; margin-top: 18px; line-height: 1.5; }
+.disclaimer strong { color: var(--casana-secondary); }
+
+@media (max-width: 520px) {
+  .result .v { font-size: 2rem; }
+  .split { grid-template-columns: 1fr; }
+}

@@ -176,6 +176,17 @@ El dinero **no debe quedarse atorado**: cargo del patrón → cae en concentrado
 conciliación automática. Un descuadre en la base es el peor escenario → **módulo de conciliación
 es crítico, no opcional**.
 
+### ⚠️ Decisión pendiente (bloqueante para STP) — modelo de dispersión
+Antes de integrar STP hay que decidir entre dos modelos:
+- **(a) Cuenta concentradora:** el dinero de todos los patrones cae en una cuenta de Casana y
+  Casana dispersa al trabajador. Máximo control y automatización, pero es el modelo que **exige
+  resolver la figura legal** de mover dinero de terceros (D1).
+- **(b) Cuenta STP por cliente:** se emite una cuenta STP a cada patrón; **el patrón deposita
+  desde su propia cuenta** hacia la del trabajador. Casana orquesta pero **no custodia** el dinero
+  de terceros → carga regulatoria mucho menor.
+> El desarrollo de `treasury`/STP se **pausa** hasta cerrar esta decisión. `imss-gateway` (línea de
+> captura) y el resto del flujo avanzan en paralelo sin depender de ella.
+
 ---
 
 ## 9. Back office / Consola de operación

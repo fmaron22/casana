@@ -1,0 +1,148 @@
+// Casana · Esquema de datos (Prisma / PostgreSQL).
+// Un SCHEMA de Postgres por módulo (bounded context) — refuerza las fronteras
+// del monolito modular (ADR-0001) y facilita desprender microservicios.
+// Montos monetarios en CENTAVOS (Int), consistente con billing/Stripe.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["identity", "onboarding"]
+}
+
+// ===========================================================================
+// identity — patrones y acceso
+// ===========================================================================
+
+enum EstadoOnboarding {
+  INICIADO
+  DATOS_COMPLETOS
+  METODO_PAGO_OK
+  ACTIVO
+
+  @@schema("identity")
+}
+
+model Patron {
+  id       String @id @default(uuid()) @db.Uuid
+  email    String @unique
+  nombre   String
+  telefono String?
+  rfc      String?
+  curp     String?
+
+  // Datos extraídos del INE (OCR) y domicilio como JSON estructurado.
+  domicilio Json?
+
+  // Vínculo con Stripe (ADR-0002). Se llena tras crear el Customer.
+  stripeCustomerId String? @unique
+
+  estadoOnboarding EstadoOnboarding @default(INICIADO)
+
+  relaciones RelacionLaboral[]
+  documentos Documento[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("identity")
+}
+
+// ===========================================================================
+// onboarding — trabajadores, relación laboral y expediente
+// ===========================================================================
+
+enum EstadoTrabajador {
+  BORRADOR
+  EXPEDIENTE_COMPLETO
+  ACTIVO
+  INACTIVO
+
+  @@schema("onboarding")
+}
+
+enum ModalidadCotizacion {
+  MES_COMPLETO
+  POR_DIA
+
+  @@schema("onboarding")
+}
+
+enum TipoDocumento {
+  INE
+  CURP
+  COMPROBANTE_DOMICILIO
+  FOTO_BIOMETRICA
+  CONTRATO
+  OTRO
+
+  @@schema("onboarding")
+}
+
+model Trabajador {
+  id     String  @id @default(uuid()) @db.Uuid
+  nombre String
+  curp   String? @unique
+  nss    String? // Número de Seguridad Social (puede asignarse en onboarding)
+
+  // Biometría por foto y cuenta bancaria (obligatoria) del expediente.
+  fotoUrl String?
+  clabe   String? // CLABE de 18 dígitos para dispersión vía STP
+
+  domicilio Json?
+  estado    EstadoTrabajador @default(BORRADOR)
+
+  relaciones RelacionLaboral[]
+  documentos Documento[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("onboarding")
+}
+
+model RelacionLaboral {
+  id           String @id @default(uuid()) @db.Uuid
+  patronId     String @db.Uuid
+  trabajadorId String @db.Uuid
+
+  lugarTrabajo  String?
+  puesto        String?
+  modalidad     ModalidadCotizacion @default(MES_COMPLETO)
+  diasSemana    Int? // días trabajados por semana (si aplica)
+  salarioDiario Int // CENTAVOS
+  jornadaHoras  Int?
+  fechaInicio   DateTime            @default(now())
+  activa        Boolean             @default(true)
+
+  patron     Patron     @relation(fields: [patronId], references: [id])
+  trabajador Trabajador @relation(fields: [trabajadorId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([patronId])
+  @@index([trabajadorId])
+  @@schema("onboarding")
+}
+
+model Documento {
+  id     String        @id @default(uuid()) @db.Uuid
+  tipo   TipoDocumento
+  url    String // referencia en Cloud Storage
+
+  patronId     String? @db.Uuid
+  trabajadorId String? @db.Uuid
+
+  patron     Patron?     @relation(fields: [patronId], references: [id])
+  trabajador Trabajador? @relation(fields: [trabajadorId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([patronId])
+  @@index([trabajadorId])
+  @@schema("onboarding")
+}

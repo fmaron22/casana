@@ -1,0 +1,17 @@
+# Postgres local para desarrollo. Levantar con:  docker compose up -d
+# Luego, en apps/api:  DATABASE_URL=... npx prisma migrate deploy
+services:
+  postgres:
+    image: postgres:16
+    container_name: casana-postgres
+    environment:
+      POSTGRES_USER: casana
+      POSTGRES_PASSWORD: casana
+      POSTGRES_DB: casana
+    ports:
+      - "5432:5432"
+    volumes:
+      - casana_pg:/var/lib/postgresql/data
+
+volumes:
+  casana_pg:

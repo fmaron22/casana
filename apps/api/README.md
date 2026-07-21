@@ -7,17 +7,35 @@ frontera dura (ADR-0001). Los módulos se desprenden a microservicios cuando la 
 
 | Módulo | Estado |
 |---|---|
-| `billing` (Stripe) | **Código listo** — `StripeService` (suscripción por trabajador + PaymentIntent de dispersión) y webhook idempotente. Ver ADR-0002. |
-| `identity`, `onboarding`, `imss-gateway`, `treasury`, `reconciliation`, … | Pendientes (roadmap por fases). |
+| `persistence` | **Corriendo** — `PrismaService` global, esquema Postgres (schemas `identity` + `onboarding`), migración `0001_init`. |
+| `identity` | **Corriendo** — alta y consulta de patrones (`POST/GET /v1/patrones`). |
+| `onboarding` | **Corriendo** — trabajadores, relación laboral y **OCR de INE** (`/v1/onboarding/ocr-ine`) con Document AI o mock. |
+| `billing` (Stripe) | **Corriendo** — `StripeService` (suscripción por trabajador + PaymentIntent de dispersión) y webhook idempotente. Ver ADR-0002. |
+| `imss-gateway`, `treasury`, `reconciliation`, `documents`, … | Pendientes (roadmap por fases). |
 
-> El **bootstrap completo de NestJS** (Nx, `package.json` con deps `@nestjs/*` + `stripe`, `main.ts`,
-> `AppModule`, Prisma, Terraform) es el **ADR-0003 / primera PR de estructura**. El código de
-> `src/modules/billing` compila una vez instaladas esas dependencias. La **lógica de montos** ya es
-> verificable hoy: vive en `@casana/billing` (`libs/billing`, 8/8 tests).
+App verificado arrancando: rutas montadas, `GET /v1/health` → 200, OCR mock funcional,
+validación de DTOs (400), webhook con firma inválida → 400.
+
+## Correr
+
+```bash
+# 1) Postgres local
+docker compose up -d           # desde la raíz del repo
+
+# 2) Cliente Prisma + migración
+cd apps/api
+cp .env.example .env            # ajustar valores
+npx prisma generate
+npx prisma migrate deploy       # aplica prisma/migrations/0001_init
+
+# 3) Compilar y arrancar
+npm run build && npm start      # http://localhost:3000
+```
 
 ## Config
 
 Variables en `.env` (ver `.env.example`); en producción, Secret Manager (GCP).
+Si `GCP_DOCUMENTAI_PROCESSOR` no está definido, el OCR usa el **mock** (dev).
 
 ## Nota de integración del webhook
 

@@ -92,9 +92,11 @@ calculadora):
 
 ### 7. Integraciones externas (fuera de GCP)
 
-- **Pagos/POS y tokenización de tarjeta:** proveedor de adquirencia (p. ej. Conekta / Stripe MX /
-  Openpay) — **no almacenamos PAN**; se tokeniza con el proveedor para **minimizar alcance PCI-DSS**.
-- **STP** (concentradora/SPEI/CLABE) y **Wunish** (tesorería) vía sus APIs.
+- **Pagos/POS y tokenización de tarjeta: Stripe.** Cobro a la TDC/TDD del patrón; **no almacenamos
+  PAN** — se tokeniza con Stripe (Payment Methods / Setup Intents para cargos recurrentes de la cuota
+  mensual), manteniendo a Casana en **alcance PCI-DSS mínimo (SAQ-A)** vía Stripe Elements/Checkout.
+- **STP** (concentradora/SPEI/CLABE) y **Wunish** (tesorería) para la **dispersión** del salario al
+  trabajador y el pago de obligaciones. División de responsabilidades: **Stripe cobra**, **STP dispersa**.
 - **IMSS:** `imss-gateway` con **adaptadores intercambiables** (API de terceros | RPA | SUA-SIPARE),
   según ADR futuro tras resolver D2.
 
@@ -115,11 +117,12 @@ calculadora):
 - Un monolito mal disciplinado puede erosionar fronteras → se blinda con reglas de dependencias de
   Nx (un módulo no importa las entrañas de otro) y un esquema de BD por módulo.
 
-**Riesgos a validar (no bloquean el arranque técnico, pero sí producción)**
-- ⚠️ **Residencia de datos:** GCP **no tiene región en México** hoy. Para una fintech MX (CNBV/PLD,
-  posible localización de datos) hay que **validar con el despacho** la región (p. ej.
-  `southamerica-*` / `us-*`) y las cláusulas de tratamiento de datos. Esto lo ve el negocio (D1/legal).
-- **PCI-DSS:** confirmar que la tokenización con el proveedor mantiene a Casana en alcance mínimo (SAQ-A).
+**Riesgos — resueltos por el negocio (2026-07-21)**
+- ✅ **Residencia de datos:** el negocio determina que **no es requisito** alojar los datos en México.
+  GCP queda confirmado; se elige región por latencia/costo (p. ej. `us-central1`) sin restricción de
+  localización. (Reevaluar solo si un regulador lo exigiera más adelante.)
+- ✅ **PCI-DSS:** se usa **Stripe** con tokenización del lado del cliente (Elements/Checkout), por lo
+  que Casana **no toca el PAN** y se mantiene en alcance mínimo (**SAQ-A**).
 
 ---
 

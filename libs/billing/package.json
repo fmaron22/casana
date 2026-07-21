@@ -4,8 +4,12 @@
   "description": "Motor de tarifas de Casana (cuota mensual + comisión + IVA). Puro, sin SDK.",
   "type": "module",
   "main": "pricing.mjs",
+  "types": "pricing.d.ts",
   "exports": {
-    ".": "./pricing.mjs"
+    ".": {
+      "types": "./pricing.d.ts",
+      "default": "./pricing.mjs"
+    }
   },
   "scripts": {
     "test": "node --test"

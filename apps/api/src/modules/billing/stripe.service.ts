@@ -16,7 +16,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
-import { calcularCargoDispersion } from '@casana/billing';
+// `@casana/billing` es ESM; se carga con import() dinámico dentro de los métodos
+// async para poder consumirlo desde este app compilado a CommonJS. Los tipos se
+// importan con `import type` (se borran en compilación).
+import type { calcularCargoDispersion as CalcularCargoDispersion } from '@casana/billing';
 
 export interface Patron {
   id: string; // id de dominio (módulo identity)
@@ -44,7 +47,7 @@ export class StripeService {
 
   constructor(private readonly config: ConfigService) {
     this.stripe = new Stripe(this.config.getOrThrow<string>('STRIPE_SECRET_KEY'), {
-      apiVersion: '2025-06-30.basil',
+      // apiVersion se fija en el dashboard de Stripe (y en la config de webhooks).
       appInfo: { name: 'Casana', version: '0.1.0' },
     });
     // Price recurrente mensual "Cuota Casana por trabajador".
@@ -117,6 +120,9 @@ export class StripeService {
    * STP se dispara al recibir el webhook `payment_intent.succeeded`.
    */
   async cobrarDispersion(input: CargoDispersionInput): Promise<Stripe.PaymentIntent> {
+    const { calcularCargoDispersion } = (await import('@casana/billing')) as {
+      calcularCargoDispersion: typeof CalcularCargoDispersion;
+    };
     const desglose = calcularCargoDispersion({
       salario: input.salario,
       obligaciones: input.obligaciones,

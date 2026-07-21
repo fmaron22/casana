@@ -2,16 +2,16 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { StripeService } from './stripe.service';
-import { BillingWebhookController } from './billing.webhook.controller';
+import { BillingWebhookController, ProcessedEventsStore } from './billing.webhook.controller';
+import { InMemoryProcessedEventsStore } from './in-memory-processed-events.store';
 
 @Module({
   imports: [ConfigModule],
   controllers: [BillingWebhookController],
   providers: [
     StripeService,
-    // ProcessedEventsStore debe proveerse con su implementación de Postgres
-    // cuando el módulo `persistence` esté listo:
-    //   { provide: ProcessedEventsStore, useClass: PgProcessedEventsStore },
+    // En producción, sustituir por la implementación con Postgres (módulo persistence).
+    { provide: ProcessedEventsStore, useClass: InMemoryProcessedEventsStore },
   ],
   exports: [StripeService],
 })

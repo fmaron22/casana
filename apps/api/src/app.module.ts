@@ -4,6 +4,7 @@ import { PersistenceModule } from './persistence/persistence.module';
 import { IdentityModule } from './modules/identity/identity.module';
 import { OnboardingModule } from './modules/onboarding/onboarding.module';
 import { BillingModule } from './modules/billing/billing.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 import { HealthController } from './health.controller';
 
 @Module({
@@ -13,6 +14,7 @@ import { HealthController } from './health.controller';
     IdentityModule,
     OnboardingModule,
     BillingModule,
+    PaymentsModule,
   ],
   controllers: [HealthController],
 })

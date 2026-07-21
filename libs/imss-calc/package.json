@@ -1,0 +1,17 @@
+{
+  "name": "@casana/imss-calc",
+  "version": "0.1.0",
+  "description": "Motor de cálculo de cuotas IMSS/INFONAVIT (PTH). Puro, config versionada.",
+  "type": "module",
+  "main": "engine.mjs",
+  "types": "engine.d.ts",
+  "exports": {
+    ".": {
+      "types": "./engine.d.ts",
+      "default": "./engine.mjs"
+    }
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

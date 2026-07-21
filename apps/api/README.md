@@ -11,10 +11,12 @@ frontera dura (ADR-0001). Los módulos se desprenden a microservicios cuando la 
 | `identity` | **Corriendo** — alta y consulta de patrones (`POST/GET /v1/patrones`). |
 | `onboarding` | **Corriendo** — trabajadores, relación laboral y **OCR de INE** (`/v1/onboarding/ocr-ine`) con Document AI o mock. |
 | `billing` (Stripe) | **Corriendo** — `StripeService` (suscripción por trabajador + PaymentIntent de dispersión) y webhook idempotente. Ver ADR-0002. |
+| `payments` | **Corriendo** — `GET /v1/cotizador` (sin estado: enlaza imss-calc + billing) y `/v1/relaciones/:id/dispersion` (preview + cobrar por relación, BD + Stripe). |
 | `imss-gateway`, `treasury`, `reconciliation`, `documents`, … | Pendientes (roadmap por fases). |
 
-App verificado arrancando: rutas montadas, `GET /v1/health` → 200, OCR mock funcional,
-validación de DTOs (400), webhook con firma inválida → 400.
+App verificado arrancando: rutas montadas, `GET /health` → 200, OCR mock funcional,
+validación de DTOs (400), webhook con firma inválida → 400, y **cotizador en vivo**
+(`GET /v1/cotizador?salarioDiario=40000&modalidad=mesCompleto` → cuotas + cargo total).
 
 ## Correr
 

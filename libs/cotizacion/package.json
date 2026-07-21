@@ -1,0 +1,21 @@
+{
+  "name": "@casana/cotizacion",
+  "version": "0.1.0",
+  "description": "Cotización de dispersión: enlaza imss-calc (cuotas) con billing (cargo).",
+  "type": "module",
+  "main": "cotizacion.mjs",
+  "types": "cotizacion.d.ts",
+  "exports": {
+    ".": {
+      "types": "./cotizacion.d.ts",
+      "default": "./cotizacion.mjs"
+    }
+  },
+  "dependencies": {
+    "@casana/imss-calc": "*",
+    "@casana/billing": "*"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

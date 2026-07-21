@@ -7,7 +7,8 @@ import { fileURLToPath } from "node:url";
 
 const dir = dirname(fileURLToPath(import.meta.url));
 const css = readFileSync(join(dir, "styles.css"), "utf8");
-const engine = readFileSync(join(dir, "engine.mjs"), "utf8");
+// El motor es canónico en libs/imss-calc (@casana/imss-calc).
+const engine = readFileSync(join(dir, "..", "..", "libs", "imss-calc", "engine.mjs"), "utf8");
 let html = readFileSync(join(dir, "index.html"), "utf8");
 
 // 1) Inlinar CSS
@@ -17,7 +18,10 @@ html = html.replace(
 );
 
 // 2) Inlinar el motor (reemplaza el import por el código del módulo)
-html = html.replace('import { calcular } from "./engine.mjs";', `\n${engine}\n`);
+html = html.replace(
+  'import { calcular } from "../../libs/imss-calc/engine.mjs";',
+  `\n${engine}\n`,
+);
 
 mkdirSync(join(dir, "dist"), { recursive: true });
 const out = join(dir, "dist", "casana-calculadora.html");

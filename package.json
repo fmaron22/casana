@@ -1,0 +1,13 @@
+{
+  "name": "casana",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Casana — plataforma para formalizar el empleo del hogar en México.",
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "test": "node --test \"libs/**/*.test.mjs\" \"apps/**/*.test.mjs\""
+  }
+}

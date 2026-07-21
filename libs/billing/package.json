@@ -1,0 +1,13 @@
+{
+  "name": "@casana/billing",
+  "version": "0.1.0",
+  "description": "Motor de tarifas de Casana (cuota mensual + comisión + IVA). Puro, sin SDK.",
+  "type": "module",
+  "main": "pricing.mjs",
+  "exports": {
+    ".": "./pricing.mjs"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

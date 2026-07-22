@@ -13,7 +13,7 @@ async function bootstrap(): Promise<void> {
   app.use('/webhooks/stripe', express.raw({ type: 'application/json' }));
   app.use(express.json());
 
-  app.setGlobalPrefix('v1', { exclude: ['health', 'webhooks/stripe'] });
+  app.setGlobalPrefix('v1', { exclude: ['health', 'webhooks/stripe', 'webhooks/email-ingest'] });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   const port = process.env.PORT ? Number(process.env.PORT) : 3000;

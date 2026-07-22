@@ -12,7 +12,8 @@ frontera dura (ADR-0001). Los módulos se desprenden a microservicios cuando la 
 | `onboarding` | **Corriendo** — trabajadores, relación laboral y **OCR de INE** (`/v1/onboarding/ocr-ine`) con Document AI o mock. |
 | `billing` (Stripe) | **Corriendo** — `StripeService` (suscripción por trabajador + PaymentIntent de dispersión) y webhook idempotente. Ver ADR-0002. |
 | `payments` | **Corriendo** — `GET /v1/cotizador` (sin estado: enlaza imss-calc + billing) y `/v1/relaciones/:id/dispersion` (preview + cobrar por relación, BD + Stripe). |
-| `imss-gateway` | **Corriendo (mock)** — `POST /v1/imss/linea-captura`. Adaptador **RPA (Playwright)** del portal PTH con detección de CAPTCHA → escalación; selectores placeholder a mapear. Ver ADR-0004. |
+| `imss-gateway` | **Corriendo (mock)** — `POST /v1/imss/linea-captura`. Adaptador **RPA (Playwright)** acotado al **alta** (ADR-0005); selectores placeholder a mapear. Ver ADR-0004. |
+| `email-ingest` | **Corriendo** — `POST /webhooks/email-ingest`: ingesta del correo mensual del IMSS (alias por patrón → parseo del PDF vía `@casana/imss-parser` → contraste vs imss-calc → `LineaCaptura` en BD). Ver ADR-0005. |
 | `treasury` (STP), `reconciliation`, `documents`, … | Pendientes. STP **pausado** por decisión de modelo (concentradora vs cuenta por cliente). |
 
 App verificado arrancando: rutas montadas, `GET /health` → 200, OCR mock funcional,

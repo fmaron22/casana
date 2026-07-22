@@ -1,0 +1,20 @@
+{
+  "name": "@casana/imss-parser",
+  "version": "0.1.0",
+  "description": "Parser del correo/PDF mensual de línea de captura del IMSS (PTH).",
+  "type": "module",
+  "main": "parser.mjs",
+  "types": "parser.d.ts",
+  "exports": {
+    ".": {
+      "types": "./parser.d.ts",
+      "default": "./parser.mjs"
+    }
+  },
+  "dependencies": {
+    "pdfjs-dist": "^4.10.38"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

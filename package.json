@@ -8,6 +8,11 @@
     "libs/*"
   ],
   "scripts": {
-    "test": "node --test \"libs/**/*.test.mjs\" \"apps/**/*.test.mjs\""
+    "test": "node --test \"libs/**/*.test.mjs\" \"apps/**/*.test.mjs\"",
+    "db:dev": "node scripts/dev-db.mjs",
+    "db:check": "node scripts/check-db.mjs"
+  },
+  "devDependencies": {
+    "embedded-postgres": "^18.4.0-beta.17"
   }
 }

@@ -46,3 +46,6 @@ coverage/
 
 # Next.js
 .next/
+
+# BD embebida de desarrollo
+.devdb/

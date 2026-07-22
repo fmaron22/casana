@@ -23,17 +23,21 @@ validación de DTOs (400), webhook con firma inválida → 400, y **cotizador en
 ## Correr
 
 ```bash
-# 1) Postgres local
-docker compose up -d           # desde la raíz del repo
+# 1) Postgres local — DOS opciones:
+npm run db:dev                  # (a) Postgres EMBEBIDO, sin Docker (recomendado en dev)
+docker compose up -d            # (b) o con Docker, desde la raíz del repo
 
 # 2) Cliente Prisma + migración
 cd apps/api
 cp .env.example .env            # ajustar valores
 npx prisma generate
-npx prisma migrate deploy       # aplica prisma/migrations/0001_init
+npx prisma migrate deploy       # aplica prisma/migrations/*
 
 # 3) Compilar y arrancar
 npm run build && npm start      # http://localhost:3000
+
+# Ver el contenido de la BD de desarrollo:
+npm run db:check                # desde la raíz
 ```
 
 ## Config

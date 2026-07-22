@@ -1,6 +1,8 @@
 # ADR-0004 · imss-gateway: generación de la línea de captura por RPA
 
-- **Estado:** Aceptado
+- **Estado:** Aceptado — **alcance reducido por [ADR-0005](./ADR-0005-operacion-mensual-correo-y-sipare.md)**:
+  el RPA aplica al **alta inicial y modificaciones** (y como *fallback* de descarga); la línea de
+  captura mensual llega por **correo** y se ingiere automáticamente.
 - **Fecha:** 2026-07-21
 - **Decisores:** Equipo Casana
 - **Relacionado:** [ADR-0001](./ADR-0001-stack-y-arquitectura.md), [`docs/IMSS-CALCULO-Y-LINEA-DE-CAPTURA.md`](../IMSS-CALCULO-Y-LINEA-DE-CAPTURA.md)

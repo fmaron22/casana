@@ -69,6 +69,18 @@ export class StripeService {
     return customer.id;
   }
 
+  /**
+   * Crea un SetupIntent para tokenizar la tarjeta del patrón con Stripe
+   * Elements (el PAN nunca toca nuestros servidores — PCI SAQ-A).
+   */
+  async crearSetupIntent(customerId: string): Promise<Stripe.SetupIntent> {
+    return this.stripe.setupIntents.create({
+      customer: customerId,
+      usage: 'off_session',
+      automatic_payment_methods: { enabled: true, allow_redirects: 'never' },
+    });
+  }
+
   /** Guarda la tarjeta como método por defecto (off_session) del patrón. */
   async attachDefaultPaymentMethod(customerId: string, paymentMethodId: string): Promise<void> {
     await this.stripe.paymentMethods.attach(paymentMethodId, { customer: customerId });

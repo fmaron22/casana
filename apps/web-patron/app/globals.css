@@ -1,0 +1,81 @@
+/* Casana · tokens del manual + estilos del wizard de registro */
+:root {
+  --primary: #c23760;
+  --primary-050: #fbeef3;
+  --secondary: #9f5074;
+  --dark: #20252c;
+  --house-top: #bf3b69;
+  --house-bottom: #d02660;
+  --ink: #20252c;
+  --ink-soft: #5b626b;
+  --line: #e7e3e6;
+  --bg: #f6f4f5;
+  --card: #ffffff;
+  --ok: #1e8e5a;
+  --radius: 18px;
+  --shadow: 0 12px 40px rgba(32, 37, 44, 0.08);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--ink); background: var(--bg); -webkit-font-smoothing: antialiased; line-height: 1.5; }
+
+.shell { max-width: 640px; margin: 0 auto; padding: 26px 18px 70px; }
+.brand { display: flex; justify-content: center; margin-bottom: 20px; }
+.brand svg { height: 38px; width: auto; }
+
+/* Progreso */
+.steps { display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; }
+.steps span { width: 34px; height: 6px; border-radius: 999px; background: var(--line); }
+.steps span.on { background: linear-gradient(90deg, var(--house-top), var(--house-bottom)); }
+
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px; }
+h1 { font-size: 1.35rem; margin: 0 0 6px; letter-spacing: -0.01em; }
+.sub { color: var(--ink-soft); margin: 0 0 22px; font-size: 0.95rem; }
+
+.field { margin-bottom: 16px; }
+label { display: block; font-weight: 700; font-size: 0.88rem; margin-bottom: 6px; }
+input, select {
+  width: 100%; font: inherit; padding: 12px 14px; border: 1.5px solid var(--line);
+  border-radius: 12px; outline: none; background: #fff; color: var(--ink);
+}
+input:focus, select:focus { border-color: var(--primary); }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.btn {
+  display: inline-block; width: 100%; text-align: center;
+  background: linear-gradient(135deg, var(--house-top), var(--house-bottom));
+  color: #fff; font: inherit; font-weight: 700; padding: 14px 22px; border-radius: 999px;
+  border: 0; cursor: pointer; font-size: 1rem; margin-top: 6px;
+  box-shadow: 0 6px 20px rgba(194, 55, 96, 0.3);
+}
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.btn-sec { background: none; border: 2px solid var(--line); color: var(--ink-soft); box-shadow: none; }
+.btn-sec:hover { border-color: var(--primary); color: var(--primary); }
+
+.scan {
+  border: 1.5px dashed var(--secondary); background: var(--primary-050);
+  border-radius: 12px; padding: 14px; text-align: center; margin-bottom: 18px;
+  font-size: 0.92rem; color: var(--secondary); cursor: pointer;
+}
+.scan input { display: none; }
+.scan strong { color: var(--primary); }
+
+.err { background: #fdf0f2; border: 1px solid #f2c7d2; color: #a12246; border-radius: 10px; padding: 12px 14px; font-size: 0.9rem; margin: 12px 0 0; }
+.okbox { background: #eef8f2; border: 1px solid #bfe6d0; color: var(--ok); border-radius: 10px; padding: 12px 14px; font-size: 0.9rem; margin: 12px 0 0; }
+.notice { background: var(--primary-050); border-radius: 10px; padding: 12px 14px; font-size: 0.85rem; color: var(--secondary); margin-bottom: 14px; }
+
+/* Cotización */
+.quote { background: linear-gradient(135deg, var(--house-top), var(--house-bottom)); color: #fff; border-radius: 14px; padding: 18px 20px; margin-top: 16px; }
+.quote .k { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.9; font-weight: 700; }
+.quote .v { font-size: 1.7rem; font-weight: 800; }
+.quote .rows { margin-top: 10px; display: grid; gap: 4px; font-size: 0.9rem; }
+.quote .rows div { display: flex; justify-content: space-between; }
+
+/* Resumen */
+.summary { display: grid; gap: 10px; margin: 16px 0; }
+.summary div { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
+.summary span:first-child { color: var(--ink-soft); }
+.summary span:last-child { font-weight: 700; }
+
+.check { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 16px; display: grid; place-items: center; background: linear-gradient(135deg, var(--house-top), var(--house-bottom)); color: #fff; font-size: 2rem; font-weight: 800; }
+.center { text-align: center; }

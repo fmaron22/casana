@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "Casana",
+    "slug": "casana",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "casana",
+    "splash": {
+      "backgroundColor": "#C23760",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "mx.casana.app"
+    },
+    "android": {
+      "package": "mx.casana.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#C23760"
+      }
+    }
+  }
+}

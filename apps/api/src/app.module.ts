@@ -7,6 +7,7 @@ import { BillingModule } from './modules/billing/billing.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { ImssGatewayModule } from './modules/imss-gateway/imss-gateway.module';
 import { EmailIngestModule } from './modules/email-ingest/email-ingest.module';
+import { BackofficeModule } from './modules/backoffice/backoffice.module';
 import { HealthController } from './health.controller';
 
 @Module({
@@ -19,6 +20,7 @@ import { HealthController } from './health.controller';
     PaymentsModule,
     ImssGatewayModule,
     EmailIngestModule,
+    BackofficeModule,
   ],
   controllers: [HealthController],
 })

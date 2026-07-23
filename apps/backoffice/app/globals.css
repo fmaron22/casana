@@ -1,0 +1,51 @@
+/* Casana · Back office — tema oscuro de operación (base #20252C del manual) */
+:root {
+  --primary: #c23760;
+  --secondary: #9f5074;
+  --house-top: #bf3b69;
+  --house-bottom: #d02660;
+  --bg: #171b21;
+  --panel: #20252c;
+  --panel-2: #262c35;
+  --ink: #f2eef0;
+  --ink-soft: #a6acb4;
+  --line: #333b45;
+  --ok: #3ecf8e;
+  --warn: #f5b83d;
+  --bad: #ff6b81;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; line-height: 1.5; font-variant-numeric: tabular-nums; }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 24px 20px 60px; }
+.top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; }
+.top svg { height: 32px; width: auto; }
+.top .tag { color: var(--ink-soft); font-size: .85rem; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 26px; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+.stat .k { color: var(--ink-soft); font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+.stat .v { font-size: 2rem; font-weight: 800; margin-top: 2px; }
+.stat .v em { font-style: normal; background: linear-gradient(135deg, var(--house-top), var(--house-bottom)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin-bottom: 22px; }
+.panel h2 { margin: 0 0 4px; font-size: 1.05rem; }
+.panel .sub { color: var(--ink-soft); font-size: .85rem; margin: 0 0 14px; }
+
+.tbl { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.tbl th, .tbl td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+.tbl th { color: var(--ink-soft); font-size: .74rem; text-transform: uppercase; letter-spacing: .05em; }
+.tbl td.num, .tbl th.num { text-align: right; }
+.tbl tr:hover td { background: var(--panel-2); }
+
+.chip { display: inline-block; font-size: .72rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; letter-spacing: .03em; }
+.chip.ok { background: rgba(62,207,142,.12); color: var(--ok); }
+.chip.warn { background: rgba(245,184,61,.12); color: var(--warn); }
+.chip.bad { background: rgba(255,107,129,.12); color: var(--bad); }
+.chip.mut { background: rgba(166,172,180,.12); color: var(--ink-soft); }
+
+.empty { color: var(--ink-soft); font-size: .88rem; padding: 14px 0; }
+.overflow { overflow-x: auto; }
+
+@media (max-width: 860px) { .stats { grid-template-columns: repeat(2, 1fr); } }

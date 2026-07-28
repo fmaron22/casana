@@ -31,8 +31,11 @@ En el alta, el correo que se registra ante el IMSS será un **alias por patrón 
 Casana** (p. ej. `imss+{patronId}@casana.mx`), con consentimiento del patrón:
 
 - Todas las líneas de captura mensuales llegan a **nuestra** infraestructura de correo.
-- Un **webhook de correo entrante** (p. ej. inbound parse de SendGrid/Mailgun, o Gmail API sobre
-  Google Workspace) entrega el correo al módulo `email-ingest`:
+- **Proveedor elegido: Postmark** (Inbound Webhook con adjuntos en base64 → mapeo directo a
+  `InboundEmailDto`; webhooks autenticados con Basic Auth; buena entregabilidad para el saliente
+  transaccional). El **MX de recepción vive en un subdominio** (p. ej. `inbox.casana.mx`) para no
+  chocar con el correo del equipo en `casana.mx`. El adaptador es intercambiable (Mailgun/SendGrid).
+- Un **webhook de correo entrante** entrega el correo al módulo `email-ingest`:
   1. Identifica al patrón por el alias destinatario.
   2. Extrae el PDF y **parsea la línea de captura, importe y vigencia**.
   3. Indexa en `documents` (patrón × trabajador × periodo) y actualiza `reconciliation`

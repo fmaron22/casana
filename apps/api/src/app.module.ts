@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PersistenceModule } from './persistence/persistence.module';
+import { AuthModule } from './auth/auth.module';
+import { MiCuentaModule } from './modules/mi-cuenta/mi-cuenta.module';
 import { IdentityModule } from './modules/identity/identity.module';
 import { OnboardingModule } from './modules/onboarding/onboarding.module';
 import { BillingModule } from './modules/billing/billing.module';
@@ -14,6 +16,8 @@ import { HealthController } from './health.controller';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     PersistenceModule,
+    AuthModule,
+    MiCuentaModule,
     IdentityModule,
     OnboardingModule,
     BillingModule,

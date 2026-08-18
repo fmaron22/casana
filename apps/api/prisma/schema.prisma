@@ -27,12 +27,13 @@ enum EstadoOnboarding {
 }
 
 model Patron {
-  id       String @id @default(uuid()) @db.Uuid
-  email    String @unique
-  nombre   String
-  telefono String?
-  rfc      String?
-  curp     String?
+  id          String  @id @default(uuid()) @db.Uuid
+  email       String  @unique
+  nombre      String
+  telefono    String?
+  rfc         String?
+  curp        String?
+  firebaseUid String? @unique // vínculo con Identity Platform (ADR-0006)
 
   // Datos extraídos del INE (OCR) y domicilio como JSON estructurado.
   domicilio Json?

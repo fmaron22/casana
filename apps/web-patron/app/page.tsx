@@ -1,13 +1,24 @@
-import { Logo } from '../components/Logo';
-import { Wizard } from '../components/Wizard';
+'use client';
 
-export default function Registro() {
+import { useEffect, useState } from 'react';
+import { getToken } from '../components/auth';
+import { Login } from '../components/Login';
+import { Dashboard } from '../components/Dashboard';
+
+export default function Home() {
+  const [autenticado, setAutenticado] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    setAutenticado(Boolean(getToken()));
+  }, []);
+
   return (
     <main className="shell">
-      <div className="brand">
-        <Logo />
-      </div>
-      <Wizard />
+      {autenticado === null ? null : autenticado ? (
+        <Dashboard onLogout={() => setAutenticado(false)} />
+      ) : (
+        <Login onLogin={() => setAutenticado(true)} />
+      )}
     </main>
   );
 }

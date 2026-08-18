@@ -1,12 +1,19 @@
 // Mini-SDK del API de Casana para el navegador.
 // TODO: extraer a @casana/api-client generado desde OpenAPI (ADR-0003).
 
+import { getToken } from './auth';
+
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3000';
 
 async function req<T>(path: string, init?: RequestInit): Promise<T> {
+  const token = getToken();
   const res = await fetch(`${API}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
     ...init,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(init?.headers ?? {}),
+    },
   });
   if (!res.ok) {
     let msg = `Error ${res.status}`;
@@ -65,7 +72,44 @@ export const api = {
       `/v1/cotizador?salarioDiario=${salarioDiarioCentavos}&modalidad=${modalidad}` +
         (diasLaborados ? `&diasLaborados=${diasLaborados}` : ''),
     ),
+
+  // --- Cuenta del patrón autenticado (/v1/mi/*) ---
+  miPerfil: () =>
+    req<{ id: string; nombre: string; email: string; tieneTarjeta: boolean }>('/v1/mi/perfil'),
+
+  misTrabajadoras: () => req<TrabajadoraConCuota[]>('/v1/mi/trabajadoras'),
+
+  misLineasCaptura: () => req<LineaCaptura[]>('/v1/mi/lineas-captura'),
+
+  agregarTrabajadora: (d: {
+    nombre: string;
+    curp?: string;
+    nss?: string;
+    clabe?: string;
+    salarioDiario: number;
+    modalidad: 'MES_COMPLETO' | 'POR_DIA';
+    diasSemana?: number;
+    puesto?: string;
+  }) => req<{ trabajador: Trabajador }>('/v1/mi/trabajadoras', { method: 'POST', body: JSON.stringify(d) }),
 };
+
+export interface TrabajadoraConCuota {
+  relacionId: string;
+  trabajador: { id: string; nombre: string; curp: string | null; nss: string | null; clabe: string | null };
+  puesto: string | null;
+  salarioDiario: number;
+  modalidad: string;
+  preview: Preview | null;
+}
+
+export interface LineaCaptura {
+  id: string;
+  periodo: string | null;
+  lineaCaptura: string | null;
+  importeCentavos: number | null;
+  vigencia: string | null;
+  estado: string;
+}
 
 export const mxn = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' });
 export const pesos = (centavos: number) => mxn.format(centavos / 100);

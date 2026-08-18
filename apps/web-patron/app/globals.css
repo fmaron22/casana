@@ -79,3 +79,22 @@ input:focus, select:focus { border-color: var(--primary); }
 
 .check { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 16px; display: grid; place-items: center; background: linear-gradient(135deg, var(--house-top), var(--house-bottom)); color: #fff; font-size: 2rem; font-weight: 800; }
 .center { text-align: center; }
+
+/* Auth + dashboard */
+.btn-oauth { margin-top: 10px; }
+.btn-apple { background: #000; box-shadow: none; }
+.dash-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.dash-top svg { height: 30px; width: auto; }
+.salir { background: none; border: 0; color: var(--ink-soft); font: inherit; font-weight: 700; cursor: pointer; }
+.salir:hover { color: var(--primary); }
+.dash-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.work { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.work:last-child { border-bottom: 0; }
+.work-name { font-weight: 700; }
+.work-sub { color: var(--ink-soft); font-size: 0.85rem; margin-top: 2px; }
+.work-cuota { text-align: right; font-weight: 800; color: var(--primary); white-space: nowrap; }
+.work-cuota span { display: block; font-size: 0.68rem; color: var(--ink-soft); font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+.chip { display: inline-block; font-size: 0.7rem; font-weight: 800; padding: 3px 9px; border-radius: 999px; margin-top: 4px; }
+.chip.ok { background: #eef8f2; color: var(--ok); }
+.chip.warn { background: #fdf6e9; color: #b8860b; }
+.chip.bad { background: #fdf0f2; color: #a12246; }

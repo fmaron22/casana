@@ -1,0 +1,15 @@
+# Copia a terraform.tfvars (gitignored) y completa. NO commitear valores reales.
+project_id = "casana-prod"
+region     = "us-central1"
+
+db_password = "CAMBIA-esto-por-un-password-fuerte"
+
+# Secretos de app (o cárgalos después con: gcloud secrets versions add ...)
+stripe_secret_key          = "sk_live_xxx"
+stripe_webhook_secret      = "whsec_xxx"
+stripe_price_cuota_mensual = "price_xxx"
+postmark_inbound_user      = "casana"
+postmark_inbound_password  = "secreto-largo"
+firebase_project_id        = "casana-prod"
+
+cors_origins = "https://casana.mx,https://app.casana.mx,https://ops.casana.mx"

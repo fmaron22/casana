@@ -1,6 +1,9 @@
 import { Logo, Isotipo } from '../components/Logo';
 import { Cotizador } from '../components/Cotizador';
 
+// App de registro/uso del sistema (web-patron). En prod: https://app.casana.mx
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3002';
+
 export default function Home() {
   return (
     <>
@@ -11,8 +14,9 @@ export default function Home() {
             <a href="#como-funciona">Cómo funciona</a>
             <a href="#beneficios">Beneficios</a>
             <a href="#cotiza">Cotiza</a>
-            <a className="btn" href="#cotiza">
-              Empezar
+            <a href={APP_URL}>Ingresar</a>
+            <a className="btn" href={APP_URL}>
+              Crear cuenta
             </a>
           </nav>
         </div>
@@ -32,11 +36,11 @@ export default function Home() {
                 efectivo, sin complicaciones.
               </p>
               <div className="hero-ctas">
-                <a className="btn" href="#cotiza">
-                  Calcula cuánto cuesta
+                <a className="btn" href={APP_URL}>
+                  Date de alta
                 </a>
-                <a className="btn btn-ghost" href="#como-funciona">
-                  Ver cómo funciona
+                <a className="btn btn-ghost" href="#cotiza">
+                  Calcula cuánto cuesta
                 </a>
               </div>
             </div>
@@ -122,6 +126,11 @@ export default function Home() {
             <h2>¿Cuánto cuesta asegurar a quien trabaja en tu casa?</h2>
             <p className="lead">Muévele al salario y míralo al instante.</p>
             <Cotizador />
+            <div style={{ textAlign: 'center', marginTop: 26 }}>
+              <a className="btn" href={APP_URL}>
+                Date de alta y nosotros hacemos el trámite
+              </a>
+            </div>
           </div>
         </section>
 
@@ -137,7 +146,7 @@ export default function Home() {
               </p>
             </div>
             <div style={{ textAlign: 'center' }}>
-              <a className="btn" href="#cotiza">
+              <a className="btn" href={APP_URL}>
                 Empieza hoy
               </a>
             </div>
